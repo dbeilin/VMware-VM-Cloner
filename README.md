@@ -1,5 +1,5 @@
 This script is pretty customized to my needs. Since every work environment is different, I'd make sure to read everything below and figure out if it suits you.
-As always, your milage may vary.
+This is my very first GUI project for Powershell. I can tell in advance that it's not perfect, but it's working. Any feedback is always welcome. Use this with caution, as always, your milage may vary.
 
 ***
 
