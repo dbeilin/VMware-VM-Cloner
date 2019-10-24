@@ -1,5 +1,10 @@
 This script is pretty customized to my needs. Since every work environment is different, I'd make sure to read everything below and figure out if it suits you.
-This is my very first GUI project for Powershell. I can tell in advance that it's not perfect, but it's working. Any feedback is always welcome. Use this with caution, as always, your milage may vary.
+This is my very first GUI project for Powershell. I can tell in advance that it's not perfect, but it's working. Any feedback is always welcome. Use this with caution, as always, your millage may vary.
+
+***
+
+Please note the script uses PowerCLI and was tested on a licensed ESXI 6.0.
+Users reported that this won't work on a free ESXI so this is just a heads up.
 
 ***
 
