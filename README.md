@@ -4,7 +4,7 @@ This is my very first GUI project for Powershell. I can tell in advance that it'
 ***
 
 This is the initial screen you'll see when you run the script
-![initial screen](https://i.imgur.com/QM4GZqF.png)
+![initial screen](https://i.imgur.com/LEkSi3m.png)
 
 **Some more information about each section:**
 - VCenter: connect to whatever VCenter you desire
