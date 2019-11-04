@@ -12,7 +12,8 @@ This is the initial screen you'll see when you run the script
 ![initial screen](https://i.imgur.com/KUjHePh.png)
 
 **Some more information about each section:**
-- VCenter: connect to whatever VCenter you desire
+- VCenter: connect to whatever VCenter you desire. If you check the "Use a Different User" checkbox, it will open a new window to enter the credentials you want to use.
+![Different User Windows](https://i.imgur.com/OgXDygg.png)
 - OS: Based on your choice of the OS, when you click "Fetch" it will populate the other fields with relevant data.
 - Tempalte: If you chose Windows for example, the tempalte combo box will populate any template with the string `win`. Same for CentOS and Redhat (basically I added only 3 OS choices). If you chose CentOS it will search any template with the word `CentOS` in it.
 - Custom Template: Once again, it will populate all your OS-related customization templates. This is the same as you would do when you manyally clone a VM and choose to generate a new SID or set it to DHCP, etc.
