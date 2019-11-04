@@ -1,13 +1,15 @@
-<# This form was created using POSHGUI.com  a free online gui designer for PowerShell
-Version: 1.0.0
-Written by Daniel Beilin > https://github.com/Beilish / https://www.reddit.com/user/bei60/
+<# This form was created using POSHGUI.com
+.Daniel Beilin
+.Version: 1.0.1
+    VM Cloner - Clone multiple VMs in vSphere from a template
+    Please read the doc on my github https://github.com/Beilish/VMware-VM-Cloner
 #>
 
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
 $Form                            = New-Object system.Windows.Forms.Form
-$Form.ClientSize                 = '684,498'
+$Form.ClientSize                 = '683,498'
 $Form.text                       = "VM Cloner - Daniel Beilin"
 $Form.TopMost                    = $false
 
@@ -190,7 +192,7 @@ $ConnectButton                   = New-Object system.Windows.Forms.Button
 $ConnectButton.text              = "Connect"
 $ConnectButton.width             = 87
 $ConnectButton.height            = 21
-$ConnectButton.location          = New-Object System.Drawing.Point(536,52)
+$ConnectButton.location          = New-Object System.Drawing.Point(535,51)
 $ConnectButton.Font              = 'Arial,12'
 $ConnectButton.ForeColor         = "#7ed321"
 
@@ -339,7 +341,16 @@ $StorageLeftLbl2.location        = New-Object System.Drawing.Point(581,411)
 $StorageLeftLbl2.Font            = 'Arial,10'
 $StorageLeftLbl2.ForeColor       = "#d0021b"
 
-$Form.controls.AddRange(@($VCenterLbl,$OSLbl,$TemplateLbl,$VMNameLbl,$DatastoreLbl,$CPULbl,$RAMLbl,$NotesLbl,$NumClonesLbl,$VCenterTB,$VMNameTB,$CPU_TB,$RAM_TB,$NotesTB,$OS_Menu,$TemplateMenu,$NumClonesTB,$DatastoreMenu,$OptionsLbl,$StartVM_CB,$OKButton,$CancelButton,$ConnectButton,$FetchButton,$StatusLbl,$ConnectedStatus,$ProvisionedLbl,$FreeLbl,$VLANLbl,$VLAN_CB,$FolderLbl,$FolderFetchButton,$FolderCB,$VM_NumTB,$CustomizationCB,$CustomizationLbl,$StorageLeftLbl,$DSInfoLbl,$ProvisionedLbl2,$FreeLbl2,$StorageLeftLbl2))
+$DifferentUserCB                 = New-Object system.Windows.Forms.CheckBox
+$DifferentUserCB.text            = "Use a Different User"
+$DifferentUserCB.AutoSize        = $false
+$DifferentUserCB.width           = 334
+$DifferentUserCB.height          = 21
+$DifferentUserCB.enabled         = $true
+$DifferentUserCB.location        = New-Object System.Drawing.Point(536,30)
+$DifferentUserCB.Font            = 'Arial,10'
+
+$Form.controls.AddRange(@($VCenterLbl,$OSLbl,$TemplateLbl,$VMNameLbl,$DatastoreLbl,$CPULbl,$RAMLbl,$NotesLbl,$NumClonesLbl,$VCenterTB,$VMNameTB,$CPU_TB,$RAM_TB,$NotesTB,$OS_Menu,$TemplateMenu,$NumClonesTB,$DatastoreMenu,$OptionsLbl,$StartVM_CB,$OKButton,$CancelButton,$ConnectButton,$FetchButton,$StatusLbl,$ConnectedStatus,$ProvisionedLbl,$FreeLbl,$VLANLbl,$VLAN_CB,$FolderLbl,$FolderFetchButton,$FolderCB,$VM_NumTB,$CustomizationCB,$CustomizationLbl,$StorageLeftLbl,$DSInfoLbl,$ProvisionedLbl2,$FreeLbl2,$StorageLeftLbl2,$DifferentUserCB))
 
 $ConnectButton.Add_MouseClick({ VCenterConnect })
 $FetchButton.Add_MouseClick({ FetchOS })
@@ -348,7 +359,6 @@ $CancelButton.Add_MouseClick({ Cancel })
 $DatastoreMenu.Add_SelectedValueChanged({ DatastoreChosen })
 $FolderFetchButton.Add_MouseClick({ FolderFetch })
 $NumClonesTB.Add_TextChanged({ CalculateStorage })
-
 
 ##########################################
 #Code
@@ -427,16 +437,90 @@ function VLANs_List {
     foreach ($VLAN in $VLANs) {$VLAN_CB.Items.Add($VLAN)}
     }
 function VCenterConnect { if ($VCenterTB.Text -ne '') {
-    try {
-        if (Connect-VIServer -Server $VCenterTB.Text -ErrorAction Stop) {
+    if ($DifferentUserCB.Checked -eq $true) {
+        Add-Type -AssemblyName System.Windows.Forms
+        [System.Windows.Forms.Application]::EnableVisualStyles()
+        
+        $AccountForm                     = New-Object system.Windows.Forms.Form
+        $AccountForm.ClientSize          = '257,112'
+        $AccountForm.text                = "VC Account"
+        $AccountForm.TopMost             = $false
+        
+        $UserLbl                         = New-Object system.Windows.Forms.Label
+        $UserLbl.text                    = "Username"
+        $UserLbl.AutoSize                = $true
+        $UserLbl.width                   = 25
+        $UserLbl.height                  = 10
+        $UserLbl.location                = New-Object System.Drawing.Point(20,19)
+        $UserLbl.Font                    = 'Arial,10'
+        
+        $PasswordLbl                     = New-Object system.Windows.Forms.Label
+        $PasswordLbl.text                = "Password"
+        $PasswordLbl.AutoSize            = $true
+        $PasswordLbl.width               = 25
+        $PasswordLbl.height              = 10
+        $PasswordLbl.location            = New-Object System.Drawing.Point(20,47)
+        $PasswordLbl.Font                = 'Arial,10'
+        
+        $UsernameTB                      = New-Object system.Windows.Forms.TextBox
+        $UsernameTB.multiline            = $false
+        $UsernameTB.text                 = "domain\username"
+        $UsernameTB.width                = 142
+        $UsernameTB.height               = 20
+        $UsernameTB.location             = New-Object System.Drawing.Point(93,16)
+        $UsernameTB.Font                 = 'Arial,10'
+        
+        $AccountOKBtn                    = New-Object system.Windows.Forms.Button
+        $AccountOKBtn.text               = "Ok"
+        $AccountOKBtn.width              = 216
+        $AccountOKBtn.height             = 26
+        $AccountOKBtn.location           = New-Object System.Drawing.Point(30,75)
+        $AccountOKBtn.Font               = 'Arial,10'
+        
+        $PasswordTB                      = New-Object System.Windows.Forms.MaskedTextBox
+        $PasswordTB.multiline            = $false
+        $UsernameTB.text                 = "domain\username"
+        $PasswordTB.width                = 142
+        $PasswordTB.height               = 20
+        $PasswordTB.location             = New-Object System.Drawing.Point(93,43)
+        $PasswordTB.Font                 = 'Arial,10'
+        $PasswordTB.PasswordChar         = '*'
+        
+        $AccountForm.controls.AddRange(@($UserLbl,$PasswordLbl,$UsernameTB,$AccountOKBtn,$PasswordTB,$VCAccountConnection))
+        
+        $AccountOKBtn.Add_MouseClick({ AccountFormOK })
+
+    function AccountFormOK {
+        try {
+            if (Connect-VIServer $VCenterTB.Text -User $UsernameTB.Text -Password $PasswordTB.Text -ErrorAction Stop)
+            {
+            $ConnectedStatus.ForeColor = "#7ed321"
             $ConnectedStatus.Text = "Connected to " + $VCenterTB.Text
             $OS_Menu.Enabled = $true
             VLANs_List
-
+            $AccountForm.Close() }
         }
-    }
-    catch {
-        $ConnectedStatus.Text = "Failed to connect"
+        catch {
+            $ConnectedStatus.ForeColor = "#d0021b"
+            $ConnectedStatus.Text = "Failed to connect"
+        }
+}
+
+    [void]$AccountForm.ShowDialog()
+        }
+    else {
+        try {
+            if (Connect-VIServer -Server $VCenterTB.Text -ErrorAction Stop) {
+            $ConnectedStatus.ForeColor = "#7ed321"
+            $ConnectedStatus.Text = "Connected to " + $VCenterTB.Text
+            $OS_Menu.Enabled = $true
+            VLANs_List
+            }
+        }
+        catch {
+            $ConnectedStatus.ForeColor = "#d0021b"
+            $ConnectedStatus.Text = "Failed to connect"
+        }
     }
 }
 }
