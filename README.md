@@ -9,7 +9,7 @@ Users reported that this won't work on a free ESXI so this is just a heads up.
 ***
 
 This is the initial screen you'll see when you run the script
-![initial screen](https://i.imgur.com/LEkSi3m.png)
+![initial screen](https://i.imgur.com/KUjHePh.png)
 
 **Some more information about each section:**
 - VCenter: connect to whatever VCenter you desire
