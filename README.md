@@ -28,3 +28,6 @@ This is the initial screen you'll see when you run the script
 - Start VM after creation: You can choose wether you want to start the VMs upon creation. Generally recommended.
 
 ![after filling out info](https://i.imgur.com/rM2PPgY.png)
+
+##Changes
+Make sure you change any settings to your environment. For example, under line 436, change the datacenter name to whatever you'll be using :)
