@@ -29,5 +29,6 @@ This is the initial screen you'll see when you run the script
 
 ![after filling out info](https://i.imgur.com/rM2PPgY.png)
 
-##Changes
+*Changes*
+
 Make sure you change any settings to your environment. For example, under line 436, change the datacenter name to whatever you'll be using :)
