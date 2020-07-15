@@ -433,7 +433,7 @@ function FetchOS {
     foreach ($template in $CustomTemplates) {$CustomizationCB.Items.Add($template)}
 }
 function VLANs_List {
-    $VLANs = Get-VirtualPortGroup -Datacenter "Holon Datacenter" | Where-Object {$_.Name -like "*VLAN*"} | Select-Object -unique
+    $VLANs = Get-VirtualPortGroup -Datacenter "Your Datacenter" | Where-Object {$_.Name -like "*VLAN*"} | Select-Object -unique
     foreach ($VLAN in $VLANs) {$VLAN_CB.Items.Add($VLAN)}
     }
 function VCenterConnect { if ($VCenterTB.Text -ne '') {
